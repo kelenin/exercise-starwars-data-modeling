@@ -13,7 +13,12 @@ class Person(Base):
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    #name = Column(String(250), nullable=False)
+    nombres = Column(String(150), nullable=False)
+    apellidos = Column(String(150), nullable=False)
+    email = Column(String(100), nullable=False)
+    password = Column(String(100), nullable=False)
+    fecha = Column(String(10), nullable=False)
 
 class Address(Base):
     __tablename__ = 'address'
@@ -26,8 +31,22 @@ class Address(Base):
     person_id = Column(Integer, ForeignKey('person.id'))
     person = relationship(Person)
 
+class Personaje(Base):
+    __tablename__ = 'personajes'
+    # Here we define columns for the table personajes.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    description = Column(String(250))
+
+class Planeta(Base):
+    __tablename__ = 'planetas'
+    # Here we define columns for the table planetas.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    description = Column(String(250))
+
     def to_dict(self):
         return {}
 
 ## Draw from SQLAlchemy base
-render_er(Base, 'diagram.png')
+render_er(Base, 'diagram-person-actualizada-3.png')
