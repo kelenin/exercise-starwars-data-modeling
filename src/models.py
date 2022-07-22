@@ -8,14 +8,12 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
+class Users(Base):
+    __tablename__ = 'users'
+    # Here we define columns for the table users
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    #name = Column(String(250), nullable=False)
-    nombres = Column(String(150), nullable=False)
-    apellidos = Column(String(150), nullable=False)
+    name = Column(String(250), nullable=False)
     email = Column(String(100), nullable=False)
     password = Column(String(100), nullable=False)
     fecha = Column(String(10), nullable=False)
@@ -28,8 +26,19 @@ class Address(Base):
     street_name = Column(String(250))
     street_number = Column(String(250))
     post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    users_id = Column(Integer, ForeignKey('users.id'))
+    users = relationship(Users)
+
+class DatosInformation(Base):
+    __tablename__ = 'datos_information'
+    # Here we define columns for the table datos_information.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    personaje_id = Column(Integer, ForeignKey("personajes.id"))
+    planeta_id = Column(Integer, ForeignKey("planetas.id"))
+    FavoritesPersonajes = Column(String(1), nullable=False)
+    users = relationship(Users)
 
 class Personaje(Base):
     __tablename__ = 'personajes'
@@ -37,6 +46,7 @@ class Personaje(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
+    datosinformation = relationship(DatosInformation)
 
 class Planeta(Base):
     __tablename__ = 'planetas'
@@ -44,9 +54,10 @@ class Planeta(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
+    datosinformation = relationship(DatosInformation)
 
     def to_dict(self):
         return {}
 
 ## Draw from SQLAlchemy base
-render_er(Base, 'diagram-person-actualizada-3.png')
+render_er(Base, 'diagram-person-actualizada-5.png')
