@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -14,9 +14,9 @@ class Users(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    email = Column(String(100), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
-    fecha = Column(String(10), nullable=False)
+    fecha = Column(Date, nullable=False)
 
 class Address(Base):
     __tablename__ = 'address'
@@ -29,32 +29,44 @@ class Address(Base):
     users_id = Column(Integer, ForeignKey('users.id'))
     users = relationship(Users)
 
-class DatosInformation(Base):
-    __tablename__ = 'datos_information'
-    # Here we define columns for the table datos_information.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    personaje_id = Column(Integer, ForeignKey("personajes.id"))
-    planeta_id = Column(Integer, ForeignKey("planetas.id"))
-    FavoritesPersonajes = Column(String(1), nullable=False)
-    users = relationship(Users)
-
 class Personaje(Base):
     __tablename__ = 'personajes'
     # Here we define columns for the table personajes.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    description = Column(String(250))
-    datosinformation = relationship(DatosInformation)
+    description = Column(String(250), nullable=False)
+
+class Favoritos(Base):
+    __tablename__ = 'favoritos'
+    # Here we define columns for the table favoritos.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    users = relationship(Users)
+    personaje_id = Column(Integer, ForeignKey("personajes.id"))
+    personaje = relationship(Personaje)
 
 class Planeta(Base):
     __tablename__ = 'planetas'
     # Here we define columns for the table planetas.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    description = Column(String(250))
-    datosinformation = relationship(DatosInformation)
+    description = Column(String(250), nullable=False)
+
+class Character(Base):
+    __tablename__ = 'character'
+    # Here we define columns for the table planetas.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=True)
+    description = Column(String(250), nullable=False)
+    personaje_id = Column(Integer, ForeignKey("personajes.id"))
+    personaje = relationship(Personaje)
+    planeta_id = Column(Integer, ForeignKey("planetas.id"))
+    planeta = relationship(Planeta)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    users = relationship(Users)
+
 
     def to_dict(self):
         return {}
