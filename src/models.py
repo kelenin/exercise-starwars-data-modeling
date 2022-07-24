@@ -60,4 +60,4 @@ class Planeta(Base):
         return {}
 
 ## Draw from SQLAlchemy base
-render_er(Base, 'diagram-person-actualizada-5.png')
+render_er(Base, 'diagram.png')
