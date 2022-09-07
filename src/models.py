@@ -52,8 +52,6 @@ class Favoritos(Base):
     # Here we define columns for the table favoritos.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    users = relationship(Users)
     character_id = Column(Integer, ForeignKey("character.id"))
     characters = relationship(Character)
     planetas_id = Column(Integer, ForeignKey("planetas.id"))
