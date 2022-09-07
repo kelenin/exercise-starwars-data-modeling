@@ -29,12 +29,23 @@ class Address(Base):
     users_id = Column(Integer, ForeignKey('users.id'))
     users = relationship(Users)
 
-class Personaje(Base):
-    __tablename__ = 'personajes'
-    # Here we define columns for the table personajes.
+class Character(Base):
+    __tablename__ = 'character'
+    # Here we define columns for the table planetas.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     description = Column(String(250), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    users = relationship(Users)
+
+class Planeta(Base):
+    __tablename__ = 'planetas'
+    # Here we define columns for the table planetas.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    description = Column(String(250), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    users = relationship(Users)
 
 class Favoritos(Base):
     __tablename__ = 'favoritos'
@@ -43,29 +54,11 @@ class Favoritos(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     users = relationship(Users)
-    personaje_id = Column(Integer, ForeignKey("personajes.id"))
-    personaje = relationship(Personaje)
+    character_id = Column(Integer, ForeignKey("character.id"))
+    characters = relationship(Character)
+    planetas_id = Column(Integer, ForeignKey("planetas.id"))
+    planetas = relationship(Planeta)
 
-class Planeta(Base):
-    __tablename__ = 'planetas'
-    # Here we define columns for the table planetas.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    description = Column(String(250), nullable=False)
-
-class Character(Base):
-    __tablename__ = 'character'
-    # Here we define columns for the table planetas.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=True)
-    description = Column(String(250), nullable=False)
-    personaje_id = Column(Integer, ForeignKey("personajes.id"))
-    personaje = relationship(Personaje)
-    planeta_id = Column(Integer, ForeignKey("planetas.id"))
-    planeta = relationship(Planeta)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    users = relationship(Users)
 
 
     def to_dict(self):
